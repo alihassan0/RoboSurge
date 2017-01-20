@@ -11,9 +11,10 @@ class PlayState extends FlxState
 {
 	var fansInRow:Int = 8; 
 	var fansInCol:Int = 8; 
-	var horizontalSapcing:Int = 70;
-	var verticalSapcing:Int = 70;
-
+	var horizontalSapcing:Int = 64;
+	var verticalSapcing:Int = 64;
+	var offsetX:Int = 20;
+	var offsetY:Int = 20;
 	var fans:Array<Array<Fan>>;
 	override public function create():Void
 	{
@@ -26,7 +27,7 @@ class PlayState extends FlxState
 			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...fansInRow)
 			{
-				fans[colIndex].push(new Fan(colIndex*verticalSapcing, rowIndex*horizontalSapcing,
+				fans[colIndex].push(new Fan(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
 									rowIndex, colIndex));
 			}
 		}
