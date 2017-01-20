@@ -30,15 +30,13 @@ class PlayState extends FlxState
 			{
 				fans[colIndex].push(new Fan(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
 									rowIndex, colIndex));
-				FlxMouseEventManager.add(fans[colIndex][rowIndex], onDown, null, null, null);
+				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}
 	}
 
-
-    public function onDown(sprite:FlxSprite)
+    public function onDown(sprite:FlxSprite, fan:Fan)
 	{
-        var fan:Fan = cast sprite;
         trace("clicked @", fan.colIndex, fan.rowIndex);
 	}
 
