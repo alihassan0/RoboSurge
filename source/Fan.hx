@@ -27,10 +27,13 @@ class Fan extends FlxSprite
     public var downSideColor:Int = 0xFF00FF00;
 
 
-    public function new (x:Int, y:Int, rowIndex:Int, colIndex:Int)
+    public function new (x:Int, y:Int, rowIndex:Int, colIndex:Int, type:Int)
     {
         super(x, y);
         loadGraphic("assets/images/stand.png");
+        isUpside = type == 2;
+        // trace(rowIndex, colIndex, type, isUpside);
+
 
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;

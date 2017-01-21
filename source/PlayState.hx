@@ -20,25 +20,34 @@ class PlayState extends FlxState
 
 	var fans:Array<Array<Fan>>;
 	var level:TiledLevel;
+	var levelNumber:Int = 0;
 
 	override public function create():Void
 	{
 		super.create();
 
+		level = new TiledLevel("assets/levels/test.tmx");
+		
 		fans = new Array<Array<Fan>>();
-		for (colIndex in 0...fansInCol)
+		setupCrowd();
+
+		
+		// startWave();
+	}
+	public function setupCrowd()
+	{
+		var tileMap = level.levelsArray[levelNumber];
+
+		for (colIndex in 0...tileMap.heightInTiles)
 		{
 			fans[colIndex] = new Array<Fan>();
-			for (rowIndex in 0...fansInRow)
+			for (rowIndex in 0...tileMap.widthInTiles)
 			{
 				fans[colIndex].push(new Fan(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
-									rowIndex, colIndex));
+									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex)));
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}
-
-		level = new TiledLevel("assets/levels/test.tmx");
-		// startWave();
 	}
 
     public function onDown(sprite:FlxSprite, fan:Fan)

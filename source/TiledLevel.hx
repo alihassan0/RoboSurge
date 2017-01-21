@@ -39,7 +39,7 @@ class TiledLevel extends TiledMap
 	public function new(tiledLevel:Dynamic)
 	{
 		super(tiledLevel);
-				
+		levelsArray = new Array<FlxTilemap>();
 		// FlxG.camera.setScrollBoundsRect(0, 0, fullWidth, fullHeight, true);
 		
 		var tilemap:FlxTilemap = new FlxTilemap();
@@ -77,6 +77,7 @@ class TiledLevel extends TiledMap
 			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedImage,
 				tileSet.tileWidth, tileSet.tileHeight, OFF, tileSet.firstGID, 1, 1);
 			
+			levelsArray.push(tilemap);
 		}
 
 	}
