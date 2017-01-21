@@ -86,7 +86,6 @@ class Fan extends FlxSprite
         upsideImage = sign.pixels.clone();
         downsideImage = sign.pixels.clone();
         
-        trace("leeeeeel", upsideImage.width, upsideImage.height);
         for (i in 0 ... upsideImage.width) 
 		{
 			for (j in 0 ... upsideImage.height)

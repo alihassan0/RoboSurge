@@ -14,13 +14,17 @@ class PlayState extends FlxState
 	var fansInCol:Int = 8; 
 	var horizontalSapcing:Int = 64;
 	var verticalSapcing:Int = 64;
-	var offsetX:Int = 20;
-	var offsetY:Int = 20;
+	var offsetX:Int = 144;
+	var offsetY:Int = 40;
 
 
 	var fans:Array<Array<Fan>>;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
+	var movesCounter:Int = 1;
+
+	var movesCounterText:FlxText;
+	var levelNumberText:FlxText;
 	
 	var levelsGoalData:FlxSprite; 
 
@@ -46,6 +50,9 @@ class PlayState extends FlxState
 		}
 		setupCrowd();
 
+		add(movesCounterText = new FlxText(0, FlxG.height - 30, 200, "Moves: 0", 24));
+		add(levelNumberText = new FlxText(0, 10, FlxG.width, "Level: 0", 24).setFormat(null, 24, 0xFFFFFFFF, "center"));
+
 		
 		// startWave();
 	}
@@ -63,6 +70,7 @@ class PlayState extends FlxState
 	{
 		//@TODO : check if this is the last level
 		levelNumber ++;
+		levelNumberText.text = "Moves: "+ levelNumber+1;
 		
 		trace("you won");
 		setupCrowd();
@@ -111,6 +119,13 @@ class PlayState extends FlxState
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{
 		fan.switchCard();
+		if(movesCounter > 0)
+		{
+			movesCounter --;
+			movesCounterText.text = "Moves: "+ movesCounter;
+		}
+		else
+			trace("GameOver");
 			// startNextLevel();
         trace("clicked @", fan.colIndex, fan.rowIndex);
 	}
