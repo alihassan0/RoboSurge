@@ -8,6 +8,10 @@ import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.input.mouse.FlxMouseEventManager;
 import fans.*;
+import flixel.addons.display.FlxBackdrop;
+
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 
 class PlayState extends FlxState
 {
@@ -17,7 +21,6 @@ class PlayState extends FlxState
 	var verticalSapcing:Float = 64;
 	var offsetX:Float = 384;
 	var offsetY:Float = 40;
-
 
 	var fans:Array<Array<Fan>>;
 	var level:TiledLevel;
@@ -30,7 +33,7 @@ class PlayState extends FlxState
 	var levelsGoalData:FlxSprite; 
 	var correctPattern:Array<FlxSprite>;
 
-	var backGrounds:Array<FlxSprite>;
+	var backGrounds:Array<FlxBackdrop>;
 
 	override public function create():Void
 	{
@@ -39,9 +42,12 @@ class PlayState extends FlxState
 		bgColor = 0xFF555555;
 
 
-		backGrounds = new Array<FlxSprite>();
+		backGrounds = new Array<FlxBackdrop>();
 		for (i in 0...8){
-			backGrounds.push(new FlxSprite(0, 0, "assets/images/9.png"));
+			if(i == 0)
+				backGrounds.push(new FlxBackdrop("assets/images/backgrounds/9.png", 1, 1, true, false));
+			else
+				backGrounds.push(new FlxBackdrop("assets/images/backgrounds/8.png", 1, 1, true, false));
 			add(backGrounds[i]);
 		}
 
@@ -149,7 +155,6 @@ class PlayState extends FlxState
 
 					backGround.reset(offsetX2,16+ offsetY + rowIndex*verticalSapcing);
 					backGround.scale.set(1+rowIndex*.1,1+rowIndex*.1);
-        			backGround.updateHitbox();
 					// add(new FlxSprite(320,50,"assets/images/9.png"));
 				}
 		
@@ -188,6 +193,28 @@ class PlayState extends FlxState
 			}
 			delay += 50;
 		}
+	}
+	public function slideAlong()
+	{
+		for (i in 0...backGrounds.length)
+		{
+			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x+642*(1+.1*i)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+				
+			}}); 
+		}
+		// for (colIndex in 0...fansInCol)
+		// {
+		// 	for (rowIndex in 0...fansInRow)
+		// 	{
+		// 		if(Math.random()<.3)
+		// 			fans[colIndex].push(new DrumFan());
+		// 		else if(Math.random()<.7)
+		// 			fans[colIndex].push(new NormalFan());
+		// 		else
+		// 			fans[colIndex].push(new MicFan());
+		// 	}
+		// }
+
 	}
 	public function inBound(x:Int, y:Int)
 	{
@@ -229,5 +256,8 @@ class PlayState extends FlxState
 		}
 		if(FlxG.keys.justPressed.TAB)
 			startWave(true);
+		
+		if(FlxG.keys.justPressed.W)
+			slideAlong();
 	}
 }
