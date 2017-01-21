@@ -83,6 +83,14 @@ class Fan extends FlxSprite
             sign.pixels = downsideImage.clone();
 
     }
+    public function playRandomAnimation()
+    {
+        
+    }
+    public function action()
+    {
+		
+    }
     public function setupSignColors()
     {
         sign.loadGraphic("assets/images/sign.png", false, 0, 0, true);

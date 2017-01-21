@@ -7,7 +7,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.input.mouse.FlxMouseEventManager;
-import fans.NormalFan;
+import fans.*;
 
 class PlayState extends FlxState
 {
@@ -48,7 +48,7 @@ class PlayState extends FlxState
 			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...fansInRow)
 			{
-				fans[colIndex].push(new NormalFan());
+				fans[colIndex].push(new DrumFan());
 			}
 		}
 
@@ -137,7 +137,7 @@ class PlayState extends FlxState
 
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{
-		fan.switchCard();
+		fan.action();
 		if(movesCounter > 0)
 		{
 			movesCounter --;
@@ -171,10 +171,8 @@ class PlayState extends FlxState
 		{
 			var randomFan:Fan = fans[Math.floor(Math.random()*8)][Math.floor(Math.random()*8)];
 			if(randomFan.animation.finished)
-				if(Math.random() < .5)
-					randomFan.play("idle");
-				else
-					randomFan.play("sleep");
+				randomFan.playRandomAnimation();
+
 		}
 	}
 }
