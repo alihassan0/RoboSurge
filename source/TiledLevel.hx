@@ -19,8 +19,6 @@ import flixel.tile.FlxTilemap;
 import flixel.group.FlxGroup;
 import haxe.io.Path;
 
-
-
 /**
  * @author Samuel Batista
  */
@@ -42,12 +40,13 @@ class TiledLevel extends TiledMap
 		levelsArray = new Array<FlxTilemap>();
 		// FlxG.camera.setScrollBoundsRect(0, 0, fullWidth, fullHeight, true);
 		
-		var tilemap:FlxTilemap = new FlxTilemap();
 			
 		for (layer in layers)
 		{
+			var tilemap:FlxTilemap = new FlxTilemap();
+			
 			if (layer.type != TiledLayerType.TILE) continue;
-			if (!layer.visible) continue;
+			// if (!layer.visible) continue;
 			
 			var tileLayer:TiledTileLayer = cast layer;
 			
@@ -67,8 +66,6 @@ class TiledLevel extends TiledMap
 			var imagePath 		= new Path(tileSet.imageSource);
 			var processedPath 	= c_PATH_LEVEL_TILESHEETS + imagePath.file + "." + imagePath.ext;
 			processedImage = FlxTileFrames.fromBitmapAddSpacesAndBorders(processedPath, FlxPoint.weak(32, 32), new FlxPoint(0, 0), new FlxPoint(2, 2));
-			
-
 			
 			//dirty hack to avoid repeading loading the map
 			var tileArray = tileLayer.tileArray;

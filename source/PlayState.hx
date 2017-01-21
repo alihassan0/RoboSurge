@@ -36,10 +36,42 @@ class PlayState extends FlxState
 		levelsGoalData.useFramePixels;
 
 		fans = new Array<Array<Fan>>();
+		for (colIndex in 0...fansInCol)
+		{
+			fans[colIndex] = new Array<Fan>();
+			for (rowIndex in 0...fansInRow)
+			{
+				fans[colIndex].push(new Fan());
+			}
+		}
 		setupCrowd();
 
 		
 		// startWave();
+	}
+	public function checkGoalState():Bool
+	{
+		for (i in 0...fans.length)
+			for (j in 0...fans[i].length)
+				if(!fans[i][j].isUpside){
+					return false;
+				}
+				
+		return true;
+	}
+	public function advanceLevel()
+	{
+		//@TODO : check if this is the last level
+		levelNumber ++;
+		
+		trace("you won");
+		setupCrowd();
+		
+	}
+	public function onSwitchCallback(fan:Fan)
+	{
+		if(checkGoalState())
+			advanceLevel();
 	}
 	public function setupCrowd()
 	{
@@ -47,16 +79,30 @@ class PlayState extends FlxState
 		levelsGoalData.animation.frameIndex = levelNumber;
 		levelsGoalData.updateFramePixels();
 
+		trace(level.levelsArray.length);
+
+		var s:String = "\n";
+
+		for (i in 0...8)
+		{
+			for (j in 0...8)
+			{
+				s += tileMap.getTile(j, i)+" ";
+			}
+			s+="\n";
+		}
+		trace(s);
+
         FlxG.bitmapLog.add(levelsGoalData.framePixels);
 		
 		for (colIndex in 0...tileMap.heightInTiles)
 		{
-			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...tileMap.widthInTiles)
 			{
-				fans[colIndex].push(new Fan(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
+				fans[colIndex][rowIndex].init(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
 									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex), 
-									levelsGoalData.framePixels.getPixel32(colIndex,rowIndex)));
+									levelsGoalData.framePixels.getPixel32(colIndex,rowIndex));
+				fans[colIndex][rowIndex].onSwitchCallback = onSwitchCallback;
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}
@@ -65,6 +111,7 @@ class PlayState extends FlxState
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{
 		fan.switchCard();
+			// startNextLevel();
         trace("clicked @", fan.colIndex, fan.rowIndex);
 	}
     
@@ -79,7 +126,7 @@ class PlayState extends FlxState
 			}
 			delay += 50;
 		}
-		
+	
 	}
 
 	override public function update(elapsed:Float):Void

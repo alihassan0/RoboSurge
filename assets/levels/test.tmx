@@ -4,8 +4,27 @@
   <image source="tileset.png" width="64" height="32"/>
  </tileset>
  <layer name="level 1" width="8" height="8">
-  <data encoding="base64" compression="zlib">
-   eJxjYmBgYKICZqSSOfTGAEFIAIA=
-  </data>
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,
+2,1,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <layer name="level 2" width="8" height="8">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,1,1,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,1,1,2,2,
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2
+</data>
  </layer>
 </map>
