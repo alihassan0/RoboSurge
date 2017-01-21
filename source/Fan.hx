@@ -132,16 +132,35 @@ class Fan extends FlxSprite
         }}); 
     }
 
-    public function showCard()
+    public function showCard(once:Bool)
     {
+        var tweenType = once? FlxTween.ONESHOT : FlxTween.PINGPONG;
+
         FlxTween.tween(sign, { y: y-50},
-			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.PINGPONG, onComplete: function(tween:FlxTween) {
+			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: tweenType, onComplete: function(tween:FlxTween) {
 				// if (autoHide) hideLetter(letter);
         } });
         var newScale:Float = 1.5*sign.scale.x;
         FlxTween.tween(sign.scale, { x: newScale, y:2 },
-			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.PINGPONG, onComplete: function(tween:FlxTween) {
+			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: tweenType, onComplete: function(tween:FlxTween) {
+				if(once)
+                    hideCard();
+        } });
+    }
+    public function onHideCallback()
+    {
+
+    }
+    public function hideCard()
+    {
+        FlxTween.tween(sign, { y: y},
+			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
 				// if (autoHide) hideLetter(letter);
+        } });
+        var newScale:Float = (1/1.5)*sign.scale.x;
+        FlxTween.tween(sign.scale, { x: newScale, y:1 },
+			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+				onHideCallback();
         } });
     }
     public function addOnDownFunc(onDown:FlxSprite->Void)

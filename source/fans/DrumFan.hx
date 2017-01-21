@@ -28,6 +28,17 @@ class DrumFan extends Fan
         fan.animation.add("playDrums", drumAnimation, 8, false);
         
     }
+    override public function showCard(once:Bool)
+    {
+        sign.visible = true;
+        drum.visible = false;
+        super.showCard(once);
+    }
+    override public function onHideCallback()
+    {
+        sign.visible = false;
+        drum.visible = true;
+    }
     override public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {
         super.init(x, y,  rowIndex, colIndex, type, upsideColor);

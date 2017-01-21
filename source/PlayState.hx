@@ -97,7 +97,7 @@ class PlayState extends FlxState
 	public function onSwitchCallback(fan:Fan)
 	{
 		if(checkGoalState())
-			startWave();
+			startWave(false);
 			
 			// advanceLevel();
 	}
@@ -157,14 +157,14 @@ class PlayState extends FlxState
         trace("clicked @", fan.colIndex, fan.rowIndex);
 	}
     
-	public function startWave()
+	public function startWave(once:Bool)
 	{
 		var delay:Int = 0; 
 		for (i in 0...fans.length)
 		{
 			for (j in 0...fans[i].length)
 			{
-        		haxe.Timer.delay(fans[i][j].showCard, delay);
+        		haxe.Timer.delay(fans[i][j].showCard.bind(once), delay);
 			}
 			delay += 50;
 		}
@@ -206,7 +206,8 @@ class PlayState extends FlxState
 			var randomFan:Fan = fans[Math.floor(Math.random()*8)][Math.floor(Math.random()*8)];
 			if(randomFan.animation.finished)
 				randomFan.playRandomAnimation();
-
 		}
+		if(FlxG.keys.justPressed.TAB)
+			startWave(true);
 	}
 }

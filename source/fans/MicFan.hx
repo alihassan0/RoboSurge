@@ -25,7 +25,17 @@ class MicFan extends Fan
         FlxG.state.add(mic);
         
         sign.visible = false;
-        
+    }
+    override public function showCard(once:Bool)
+    {
+        sign.visible = true;
+        mic.visible = false;
+        super.showCard(once);
+    }
+    override public function onHideCallback()
+    {
+        sign.visible = false;
+        mic.visible = true;
     }
     override public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {
