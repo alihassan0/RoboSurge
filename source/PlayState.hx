@@ -10,13 +10,17 @@ import flixel.input.mouse.FlxMouseEventManager;
 
 class PlayState extends FlxState
 {
-	var fansInRow:Int = 1; 
-	var fansInCol:Int = 1; 
+	var fansInRow:Int = 8; 
+	var fansInCol:Int = 8; 
 	var horizontalSapcing:Int = 64;
 	var verticalSapcing:Int = 64;
 	var offsetX:Int = 20;
 	var offsetY:Int = 20;
+
+
 	var fans:Array<Array<Fan>>;
+	var level:TiledLevel;
+
 	override public function create():Void
 	{
 		super.create();
@@ -32,6 +36,8 @@ class PlayState extends FlxState
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}
+
+		level = new TiledLevel("assets/levels/test.tmx");
 		// startWave();
 	}
 
