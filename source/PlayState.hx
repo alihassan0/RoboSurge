@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.input.mouse.FlxMouseEventManager;
+import fans.NormalFan;
 
 class PlayState extends FlxState
 {
@@ -47,7 +48,7 @@ class PlayState extends FlxState
 			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...fansInRow)
 			{
-				fans[colIndex].push(new Fan());
+				fans[colIndex].push(new NormalFan());
 			}
 		}
 
@@ -125,7 +126,7 @@ class PlayState extends FlxState
 				fans[colIndex][rowIndex].init(offsetX + colIndex*horizontalSapcing, offsetY + rowIndex*verticalSapcing,
 									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex), newColor);
 				fans[colIndex][rowIndex].onSwitchCallback = onSwitchCallback;
-			fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
+				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 				trace(rowIndex, colIndex , offsetX, horizontalSapcing);
 				correctPattern[rowIndex*tileMap.widthInTiles + colIndex].color = newColor;
 				// verticalSapcing = 64 + rowIndex*64*.2;
@@ -165,5 +166,15 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+
+		if(Math.random()<.04)
+		{
+			var randomFan:Fan = fans[Math.floor(Math.random()*8)][Math.floor(Math.random()*8)];
+			if(randomFan.animation.finished)
+				if(Math.random() < .5)
+					randomFan.play("idle");
+				else
+					randomFan.play("sleep");
+		}
 	}
 }
