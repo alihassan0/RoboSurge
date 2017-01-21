@@ -48,10 +48,12 @@ class PlayState extends FlxState
 			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...fansInRow)
 			{
-				if(Math.random()<.5)
+				if(Math.random()<.3)
 					fans[colIndex].push(new DrumFan());
-				else
+				else if(Math.random()<.7)
 					fans[colIndex].push(new NormalFan());
+				else
+					fans[colIndex].push(new MicFan());
 			}
 		}
 
@@ -179,7 +181,6 @@ class PlayState extends FlxState
 	{
 		var delay:Int = 0; 
 		var positions = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]];
-		trace("startRipplestartRipplestartRipplestartRipple");
 		var x, y, currentFan;
 		for (i in 0...positions.length)
 		{
