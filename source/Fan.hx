@@ -31,7 +31,20 @@ class Fan extends FlxSprite
         FlxG.state.add(this);
         FlxG.state.add(fan);
         FlxG.state.add(sign);
+
 		
+    }
+    public function showCard()
+    {
+        FlxTween.tween(sign, { y: y-50},
+			1, { startDelay: Math.random()*.1, ease: FlxEase.quadOut, type: FlxTween.PINGPONG, onComplete: function(tween:FlxTween) {
+				// if (autoHide) hideLetter(letter);
+        } });
+        
+        FlxTween.tween(sign.scale, { x: 1.5, y:2 },
+			1, { startDelay: Math.random()*.1, ease: FlxEase.quadOut, type: FlxTween.PINGPONG, onComplete: function(tween:FlxTween) {
+				// if (autoHide) hideLetter(letter);
+        } });
     }
     public function addOnDownFunc(onDown:FlxSprite->Void)
     {
