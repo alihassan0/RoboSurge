@@ -21,7 +21,6 @@ class PlayState extends FlxState
 	{
 		super.create();
 
-
 		fans = new Array<Array<Fan>>();
 		for (colIndex in 0...fansInCol)
 		{
@@ -30,16 +29,29 @@ class PlayState extends FlxState
 			{
 				fans[colIndex].push(new Fan(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
 									rowIndex, colIndex));
-				FlxMouseEventManager.add(fans[colIndex][rowIndex], onDown, null, null, null);
+				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}
+		startWave();
 	}
 
-
-    public function onDown(sprite:FlxSprite)
+    public function onDown(sprite:FlxSprite, fan:Fan)
 	{
-        var fan:Fan = cast sprite;
         trace("clicked @", fan.colIndex, fan.rowIndex);
+	}
+    
+	public function startWave()
+	{
+		var delay:Int = 0; 
+		for (i in 0...fans.length)
+		{
+			for (j in 0...fans[i].length)
+			{
+        		haxe.Timer.delay(fans[i][j].showCard, delay);
+			}
+			delay += 50;
+		}
+		
 	}
 
 	override public function update(elapsed:Float):Void
