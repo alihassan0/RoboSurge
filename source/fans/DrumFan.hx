@@ -2,6 +2,9 @@ package fans;
 
 import flixel.FlxSprite;
 import flixel.FlxG;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+
 
 class DrumFan extends Fan
 {
@@ -34,10 +37,16 @@ class DrumFan extends Fan
         drum.visible = false;
         super.showCard(once);
     }
+
     override public function onHideCallback()
     {
         sign.visible = false;
         drum.visible = true;
+    }
+    override public function slide()
+    {
+        super.slide();
+        FlxTween.tween(drum, { x: x-FlxG.width}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
     }
     override public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {

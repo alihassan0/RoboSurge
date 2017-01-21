@@ -2,6 +2,9 @@ package fans;
 
 import flixel.FlxSprite;
 import flixel.FlxG;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+
 
 class MicFan extends Fan
 {
@@ -48,6 +51,11 @@ class MicFan extends Fan
     {
         mic.animation.play("idle");
         fan.animation.play("idle");
+    }
+    override public function slide()
+    {
+        super.slide();
+        FlxTween.tween(mic, { x: x-FlxG.width}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
     }
     public function shoutInMic()
     {

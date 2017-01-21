@@ -196,24 +196,21 @@ class PlayState extends FlxState
 	}
 	public function slideAlong()
 	{
+		//move 
 		for (i in 0...backGrounds.length)
 		{
-			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x+642*(1+.1*i)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
-				
+			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*(1+.1*i)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
 			}}); 
+				
 		}
-		// for (colIndex in 0...fansInCol)
-		// {
-		// 	for (rowIndex in 0...fansInRow)
-		// 	{
-		// 		if(Math.random()<.3)
-		// 			fans[colIndex].push(new DrumFan());
-		// 		else if(Math.random()<.7)
-		// 			fans[colIndex].push(new NormalFan());
-		// 		else
-		// 			fans[colIndex].push(new MicFan());
-		// 	}
-		// }
+		
+		for (colIndex in 0...fansInCol)
+		{
+			for (rowIndex in 0...fansInRow)
+			{
+				fans[colIndex][rowIndex].slide();
+			}
+		}
 
 	}
 	public function inBound(x:Int, y:Int)
