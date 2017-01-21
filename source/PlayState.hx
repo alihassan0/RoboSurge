@@ -30,12 +30,20 @@ class PlayState extends FlxState
 	var levelsGoalData:FlxSprite; 
 	var correctPattern:Array<FlxSprite>;
 
+	var backGrounds:Array<FlxSprite>;
+
 	override public function create():Void
 	{
 		super.create();
-
 		level = new TiledLevel("assets/levels/test.tmx");
 		bgColor = 0xFF555555;
+
+
+		backGrounds = new Array<FlxSprite>();
+		for (i in 0...8){
+			backGrounds.push(new FlxSprite(0, 0, "assets/images/9.png"));
+			add(backGrounds[i]);
+		}
 
 		levelsGoalData = new FlxSprite();
 		levelsGoalData.loadGraphic("assets/levels/levelsGoalData.png", true, 8, 8);
@@ -126,6 +134,7 @@ class PlayState extends FlxState
 			{
 				horizontalSapcing = 64 + 64*.1*rowIndex;
 				offsetX = 384 - (8*64)*.1*.5 *rowIndex;
+				var offsetX2 = 320 - (10*64)*.1*.5 *rowIndex;
 				newColor = levelsGoalData.framePixels.getPixel32(colIndex,rowIndex);
 
 				fans[colIndex][rowIndex].init(offsetX + colIndex*horizontalSapcing, offsetY + rowIndex*verticalSapcing,
@@ -133,6 +142,17 @@ class PlayState extends FlxState
 				fans[colIndex][rowIndex].onSwitchCallback = onSwitchCallback;
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 				correctPattern[rowIndex*tileMap.widthInTiles + colIndex].color = newColor;
+
+				if(colIndex == 0)
+				{
+					var backGround = backGrounds[rowIndex];
+
+					backGround.reset(offsetX2,16+ offsetY + rowIndex*verticalSapcing);
+					backGround.scale.set(1+rowIndex*.1,1+rowIndex*.1);
+        			backGround.updateHitbox();
+					// add(new FlxSprite(320,50,"assets/images/9.png"));
+				}
+		
 				// verticalSapcing = 64 + rowIndex*64*.2;
 				// offsetY = 40 - rowIndex*64*.1;
 			}
