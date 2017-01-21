@@ -27,12 +27,14 @@ class Fan extends FlxSprite
     public var downSideColor:Int = 0xFF4DFD78;
 
     public var onSwitchCallback:Fan->Void;
+    public var type:String;
 
 
     public function new (x:Int = 0, y:Int = 0, ?type:String = "fan")
     {
         super(x, y);
         loadGraphic("assets/images/stand.png");
+        this.type = type;
 
         fan = new FlxSprite(x,y);
         fan.loadGraphic("assets/images/"+ type +"Sprite.png", true, 66, 66);
@@ -81,7 +83,6 @@ class Fan extends FlxSprite
             sign.pixels = upsideImage.clone();
         else
             sign.pixels = downsideImage.clone();
-
     }
     public function playRandomAnimation()
     {

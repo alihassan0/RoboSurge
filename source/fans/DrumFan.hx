@@ -15,7 +15,11 @@ class DrumFan extends Fan
         drum = new FlxSprite(x,y);
         drum.loadGraphic("assets/images/dramSprite.png", true, 66, 66);
         drum.animation.add("idle", [0,1,2,3], 3, true);
-        
+        var drumAnimation = [for (i in 12...24) i];
+        drumAnimation = drumAnimation.concat(drumAnimation).concat(drumAnimation);
+        drumAnimation.push(12);
+        drum.animation.add("playDrums", drumAnimation, 12, false);
+
         FlxG.state.add(drum);
         
         sign.visible = false;
@@ -32,5 +36,13 @@ class DrumFan extends Fan
     override public function playRandomAnimation()
     {
         drum.animation.play("idle");
+    }
+    public function playDrum()
+    {
+        drum.animation.play("playDrums");
+    }
+    override public function action()
+    {
+		playDrum();
     }
 }

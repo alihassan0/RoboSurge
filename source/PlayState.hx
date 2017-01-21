@@ -48,7 +48,10 @@ class PlayState extends FlxState
 			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...fansInRow)
 			{
-				fans[colIndex].push(new DrumFan());
+				if(Math.random()<.5)
+					fans[colIndex].push(new DrumFan());
+				else
+					fans[colIndex].push(new NormalFan());
 			}
 		}
 
@@ -127,7 +130,6 @@ class PlayState extends FlxState
 									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex), newColor);
 				fans[colIndex][rowIndex].onSwitchCallback = onSwitchCallback;
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
-				trace(rowIndex, colIndex , offsetX, horizontalSapcing);
 				correctPattern[rowIndex*tileMap.widthInTiles + colIndex].color = newColor;
 				// verticalSapcing = 64 + rowIndex*64*.2;
 				// offsetY = 40 - rowIndex*64*.1;
@@ -137,7 +139,11 @@ class PlayState extends FlxState
 
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{
+		if(fan.type == "dramFan")			
+			startRipple(fan);
+
 		fan.action();
+		
 		if(movesCounter > 0)
 		{
 			movesCounter --;
@@ -160,7 +166,33 @@ class PlayState extends FlxState
 			}
 			delay += 50;
 		}
-	
+	}
+	public function inBound(x:Int, y:Int)
+	{
+		return x>= 0 && y >= 0 && x <8 && y <8;
+	}
+	public function getFanAt(rowIndex:Int, colIndex:Int)
+	{
+		return fans[rowIndex][colIndex];
+	}
+	public function startRipple(fan:Fan)
+	{
+		var delay:Int = 0; 
+		var positions = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]];
+		trace("startRipplestartRipplestartRipplestartRipple");
+		var x, y, currentFan;
+		for (i in 0...positions.length)
+		{
+			x = positions[i][0]+fan.colIndex;
+			y = positions[i][1]+fan.rowIndex;
+			trace(x, y, inBound(x, y), getFanAt(x,y).type);
+			if(inBound(x, y))
+			{
+				currentFan = getFanAt(x,y);
+				if(currentFan.type == "fan")
+        			haxe.Timer.delay(currentFan.switchCard, delay);
+			}
+		}
 	}
 
 	override public function update(elapsed:Float):Void
