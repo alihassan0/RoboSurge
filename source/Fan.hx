@@ -48,10 +48,11 @@ class Fan extends FlxSprite
     public function updateSignColor()
     {
         // isUpside = !isUpside;
+        
         if(isUpside)
-            sign.pixels = upsideImage;
+            sign.pixels = upsideImage.clone();
         else
-            sign.pixels = downsideImage;
+            sign.pixels = downsideImage.clone();
 
     }
     public function setupSignColors()
