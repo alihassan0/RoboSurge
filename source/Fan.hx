@@ -43,7 +43,7 @@ class Fan extends FlxSprite
         FlxG.state.add(sign);
 
     }
-    public function init(x:Int, y:Int, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
+    public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {
         reset(x, y);
         fan.reset(x, y);
@@ -53,6 +53,13 @@ class Fan extends FlxSprite
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;
         this.upsideColor = upsideColor;
+
+        this.scale.set(1+rowIndex*.1,1+rowIndex*.1);
+        this.updateHitbox();
+        fan.scale.set(1+rowIndex*.1,1+rowIndex*.1);
+        fan.updateHitbox();
+        sign.scale.set(1+rowIndex*.1,1+rowIndex*.1);
+        sign.updateHitbox();
 
         setupSignColors();
         FlxG.bitmapLog.add(upsideImage);
@@ -65,12 +72,10 @@ class Fan extends FlxSprite
         // isUpside = !isUpside;
         sign.pixels.dispose();
 
-        trace("btngan1", upsideImage.width, upsideImage.height);
         if(isUpside)
             sign.pixels = upsideImage.clone();
         else
             sign.pixels = downsideImage.clone();
-        trace("btngan");
 
     }
     public function setupSignColors()
@@ -86,7 +91,6 @@ class Fan extends FlxSprite
         upsideImage = sign.pixels.clone();
         downsideImage = sign.pixels.clone();
         
-        trace("leeeeeel", upsideImage.width, upsideImage.height);
         for (i in 0 ... upsideImage.width) 
 		{
 			for (j in 0 ... upsideImage.height)
@@ -102,7 +106,7 @@ class Fan extends FlxSprite
     }
     public function switchCard()
     {
-        var newScale:Int = Math.floor(-1*sign.scale.x);
+        var newScale:Float = -1*sign.scale.x;
 
         FlxTween.tween(sign.scale, { x: 0}, 1, { startDelay: Math.random()*.1, ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
             isUpside = !isUpside;
@@ -131,8 +135,8 @@ class Fan extends FlxSprite
 			1, { startDelay: Math.random()*.1, ease: FlxEase.quadOut, type: FlxTween.PINGPONG, onComplete: function(tween:FlxTween) {
 				// if (autoHide) hideLetter(letter);
         } });
-        
-        FlxTween.tween(sign.scale, { x: 1.5, y:2 },
+        var newScale:Float = 1.5*sign.scale.x;
+        FlxTween.tween(sign.scale, { x: newScale, y:2 },
 			1, { startDelay: Math.random()*.1, ease: FlxEase.quadOut, type: FlxTween.PINGPONG, onComplete: function(tween:FlxTween) {
 				// if (autoHide) hideLetter(letter);
         } });
