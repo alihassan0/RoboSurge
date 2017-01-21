@@ -21,13 +21,20 @@ class PlayState extends FlxState
 	var fans:Array<Array<Fan>>;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
+	
+	var levelsGoalData:FlxSprite; 
 
 	override public function create():Void
 	{
 		super.create();
 
 		level = new TiledLevel("assets/levels/test.tmx");
-		
+		bgColor = 0xFF555555;
+
+		levelsGoalData = new FlxSprite();
+		levelsGoalData.loadGraphic("assets/levels/levelsGoalData.png", true, 8, 8);
+		levelsGoalData.useFramePixels;
+
 		fans = new Array<Array<Fan>>();
 		setupCrowd();
 
@@ -37,14 +44,19 @@ class PlayState extends FlxState
 	public function setupCrowd()
 	{
 		var tileMap = level.levelsArray[levelNumber];
+		levelsGoalData.animation.frameIndex = levelNumber;
+		levelsGoalData.updateFramePixels();
 
+        FlxG.bitmapLog.add(levelsGoalData.framePixels);
+		
 		for (colIndex in 0...tileMap.heightInTiles)
 		{
 			fans[colIndex] = new Array<Fan>();
 			for (rowIndex in 0...tileMap.widthInTiles)
 			{
 				fans[colIndex].push(new Fan(offsetX + colIndex*verticalSapcing, offsetY + rowIndex*horizontalSapcing,
-									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex)));
+									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex), 
+									levelsGoalData.framePixels.getPixel32(colIndex,rowIndex)));
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}

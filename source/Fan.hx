@@ -24,10 +24,10 @@ class Fan extends FlxSprite
     public var upsideColor:Int = 0xFFFF00FF;
     
     public var downsideImage:BitmapData;
-    public var downSideColor:Int = 0xFF00FF00;
+    public var downSideColor:Int = 0xFF4DFD78;
 
 
-    public function new (x:Int, y:Int, rowIndex:Int, colIndex:Int, type:Int)
+    public function new (x:Int, y:Int, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {
         super(x, y);
         loadGraphic("assets/images/stand.png");
@@ -37,7 +37,9 @@ class Fan extends FlxSprite
 
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;
+        this.upsideColor = upsideColor;
         
+
         fan = new FlxSprite(x,y,"assets/images/fan.png");
         sign = new FlxSprite(x,y,"assets/images/sign.png");
         sign.loadGraphic("assets/images/sign.png", false, 0, 0, true);
@@ -74,8 +76,6 @@ class Fan extends FlxSprite
 				}
 			}
 		}
-        FlxG.bitmapLog.add(upsideImage);
-        FlxG.bitmapLog.add(downsideImage);
         updateSignColor();
     }
     public function switchCard()
