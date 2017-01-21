@@ -175,6 +175,7 @@ class PlayState extends FlxState
 	}
 	public function getFanAt(rowIndex:Int, colIndex:Int)
 	{
+		trace(rowIndex, colIndex);
 		return fans[rowIndex][colIndex];
 	}
 	public function startRipple(fan:Fan)

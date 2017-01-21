@@ -10,8 +10,8 @@ class DrumFan extends Fan
     public function new (x:Int = 0, y:Int = 0, type:String = "dramFan")
     {
         super(x, y, type);
-        fan.animation.add("idle", [0,1,0,1,0], 1, false);
-
+        sign.visible = false;
+        
         drum = new FlxSprite(x,y);
         drum.loadGraphic("assets/images/dramSprite.png", true, 66, 66);
         drum.animation.add("idle", [0,1,2,3], 3, true);
@@ -19,10 +19,13 @@ class DrumFan extends Fan
         drumAnimation = drumAnimation.concat(drumAnimation).concat(drumAnimation);
         drumAnimation.push(12);
         drum.animation.add("playDrums", drumAnimation, 12, false);
+        FlxG.state.add(drum);   
 
-        FlxG.state.add(drum);
-        
-        sign.visible = false;
+        fan.animation.add("idle", [0,1,0,1], 2, true);
+
+        var drumAnimation = [4,5,6,7,4,5,6,7];
+        drumAnimation = drumAnimation.concat(drumAnimation).concat(drumAnimation);
+        fan.animation.add("playDrums", drumAnimation, 8, false);
         
     }
     override public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
@@ -36,10 +39,12 @@ class DrumFan extends Fan
     override public function playRandomAnimation()
     {
         drum.animation.play("idle");
+        fan.animation.play("idle");
     }
     public function playDrum()
     {
         drum.animation.play("playDrums");
+        fan.animation.play("playDrums");
     }
     override public function action()
     {

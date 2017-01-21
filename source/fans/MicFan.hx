@@ -14,12 +14,14 @@ class MicFan extends Fan
 
         mic = new FlxSprite(x,y);
         mic.loadGraphic("assets/images/mic.png", true, 66, 66);
-        mic.animation.add("idle", [0,1,2], 4, true);
-        var micAnimation = [for (i in 0...4) i];
+        mic.animation.add("idle", [0,1,2], 4, false);
+        var micAnimation = [for (i in 0...5) i];
         micAnimation = micAnimation.concat(micAnimation).concat(micAnimation);
         micAnimation.push(6);
         mic.animation.add("useMic", micAnimation, 12, false);
-
+        
+        fan.animation.add("idle", [0,1,2,1,2,1,2,1,2,0], 10, false);
+        fan.animation.add("useMic", [6,7,8,9,10,11,6], 4, false);
         FlxG.state.add(mic);
         
         sign.visible = false;
@@ -35,10 +37,12 @@ class MicFan extends Fan
     override public function playRandomAnimation()
     {
         mic.animation.play("idle");
+        fan.animation.play("idle");
     }
     public function shoutInMic()
     {
         mic.animation.play("useMic");
+        fan.animation.play("useMic");
     }
     override public function action()
     {
