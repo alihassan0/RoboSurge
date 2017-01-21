@@ -10,8 +10,8 @@ import flixel.input.mouse.FlxMouseEventManager;
 
 class PlayState extends FlxState
 {
-	var fansInRow:Int = 8; 
-	var fansInCol:Int = 8; 
+	var fansInRow:Int = 1; 
+	var fansInCol:Int = 1; 
 	var horizontalSapcing:Int = 64;
 	var verticalSapcing:Int = 64;
 	var offsetX:Int = 20;
@@ -32,11 +32,12 @@ class PlayState extends FlxState
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 			}
 		}
-		startWave();
+		// startWave();
 	}
 
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{
+		fan.switchCard();
         trace("clicked @", fan.colIndex, fan.rowIndex);
 	}
     
