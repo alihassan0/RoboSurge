@@ -118,7 +118,7 @@ class PlayState extends FlxState
 			delay += 50;
 		}
 	}
-	public function advanceLevel(duration:Int, ease:Float->Float, numOfLevels:Int = 1)
+	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
 		//@TODO : check if this is the last level
 		levelNumber ++;
@@ -126,7 +126,7 @@ class PlayState extends FlxState
 
 		for (i in 0...backGrounds.length)
 		{
-			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: ease, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
 			}}); 		
 		}
 
@@ -166,11 +166,19 @@ class PlayState extends FlxState
 			startWave(crowds[levelNumber],true);
 		
 		if(FlxG.keys.justPressed.W)
-			advanceLevel(1, FlxEase.quadOut, 2);
+			advanceLevel(1, FlxEase.quadOut, 1);
 		
 		if(FlxG.keys.justPressed.A)
+		{
+			advanceLevel(2.5, linear, 2);
 			startFinalWave();
+		}
 
 		// if(FlxG.keys.justPressed.W)
+	}
+
+	public function linear(t:Float):Float
+	{
+		return t ;
 	}
 }
