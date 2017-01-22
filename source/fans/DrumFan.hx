@@ -21,14 +21,14 @@ class DrumFan extends Fan
         var drumAnimation = [for (i in 12...24) i];
         drumAnimation = drumAnimation.concat(drumAnimation).concat(drumAnimation);
         drumAnimation.push(12);
-        drum.animation.add("playDrums", drumAnimation, 12, false);
+        drum.animation.add("playDrums", drumAnimation, 24, false);
         FlxG.state.add(drum);   
 
         fan.animation.add("idle", [0,1,0,1], 2, true);
 
         var drumAnimation = [4,5,6,7,4,5,6,7];
         drumAnimation = drumAnimation.concat(drumAnimation).concat(drumAnimation);
-        fan.animation.add("playDrums", drumAnimation, 8, false);
+        fan.animation.add("playDrums", drumAnimation, 16, false);
         
     }
     override public function showCard(once:Bool)

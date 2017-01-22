@@ -83,7 +83,7 @@ class PlayState extends FlxState
 			crowds[sectorsIndex].onDoneCallback = onDoneCallback;
 		}
 		
-		add(movesCounterText = new FlxText(0, FlxG.height - 30, 200, "Moves: 0", 24));
+		add(movesCounterText = new FlxText(0, FlxG.height - 30, 300, "Actions Left: 1", 24));
 		add(levelNumberText = new FlxText(0, 10, FlxG.width, "Level: 1", 24).setFormat(null, 24, 0xFFFFFFFF, "center"));
 
 		add(new FlxText(FlxG.width - 100, FlxG.height - 120, 100, "correct Pattern", 8).setFormat(null, 8, 0xFF000000, "left"));
@@ -116,9 +116,8 @@ class PlayState extends FlxState
 
     public function onDoneCallback(crowd:Crowd)
 	{
-		
 		startWave(crowds[levelNumber], true);
-		trace(levelNumber, sectorsCount);
+		
 		if(levelNumber < sectorsCount-1)
 			// advanceLevel(1, FlxEase.quadOut, 1);
 			haxe.Timer.delay(advanceLevel.bind(.8, FlxEase.quadOut, 1), 3000);
@@ -132,11 +131,14 @@ class PlayState extends FlxState
     
 	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
-		trace("WHY!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		var movesArray = [1, 2, 5, 4, 3, 4];
 		duration *= numOfLevels;
 		//@TODO : check if this is the last level
 		levelNumber += numOfLevels;
+		movesCounter += movesArray[levelNumber];
+
 		levelNumberText.text = "level: "+ (levelNumber+1);
+		movesCounterText.text = "Actions Left: "+ (movesCounter);
 		resetPattern(levelNumber);
 		var tweenType = (numOfLevels < 0)? FlxTween.BACKWARD: FlxTween.ONESHOT; 
 			
