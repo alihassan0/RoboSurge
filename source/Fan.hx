@@ -50,11 +50,11 @@ class Fan extends FlxSprite
     {
         fan.animation.play(anim);
     }
-    public function slide(duration:Float, ease:Float->Float)
+    public function slide(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
     {
-        FlxTween.tween(this, { x: x-642*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
-        FlxTween.tween(fan, { x: x-642*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
-        FlxTween.tween(sign, { x: x-642*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(this, { x: x-642*numOfLevels*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(fan, { x: x-642*numOfLevels*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(sign, { x: x-642*numOfLevels*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
     }
     public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {

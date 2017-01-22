@@ -141,13 +141,13 @@ class Crowd
 		trace(rowIndex, colIndex);
 		return fans[rowIndex][colIndex];
 	}
-    public function slideAlong(duration:Float, ease:Float->Float)
+    public function slideAlong(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{		
 		for (colIndex in 0...fansInCol)
 		{
 			for (rowIndex in 0...fansInRow)
 			{
-				fans[colIndex][rowIndex].slide(duration, ease);
+				fans[colIndex][rowIndex].slide(duration, ease, numOfLevels);
 			}
 		}
 	}

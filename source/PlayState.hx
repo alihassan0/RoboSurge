@@ -24,7 +24,7 @@ class PlayState extends FlxState
 
 	var crowds:Array<Crowd>;
 	var crowd:Crowd;
-	var sectorsCount = 2;
+	var sectorsCount = 3;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
 	var movesCounter:Int = 1;
@@ -96,25 +96,6 @@ class PlayState extends FlxState
 
 		
 	}
-	public function advanceLevel(duration:Int = 1)
-	{
-		var ease = FlxEase.quadOut;
-		//@TODO : check if this is the last level
-		levelNumber ++;
-		levelNumberText.text = "level: "+ (levelNumber+1);
-
-		for (i in 0...backGrounds.length)
-		{
-			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*(1+.1*i)}, duration, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
-			}}); 		
-		}
-
-		for (sectorsIndex in 0...sectorsCount)
-		{
-			slideAlong(crowds[sectorsIndex], duration, ease);
-		}
-		
-	}
 	
 
     public function onDoneCallback(crowd:Crowd)
@@ -137,6 +118,24 @@ class PlayState extends FlxState
 			delay += 50;
 		}
 	}
+	public function advanceLevel(duration:Int, ease:Float->Float, numOfLevels:Int = 1)
+	{
+		//@TODO : check if this is the last level
+		levelNumber ++;
+		levelNumberText.text = "level: "+ (levelNumber+1);
+
+		for (i in 0...backGrounds.length)
+		{
+			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+			}}); 		
+		}
+
+		for (sectorsIndex in 0...sectorsCount)
+		{
+			slideAlong(crowds[sectorsIndex], duration, ease, numOfLevels);
+		}	
+	}
+
 	public function startFinalWave()
 	{
 		var delay:Int = 0; 
@@ -146,9 +145,9 @@ class PlayState extends FlxState
 			delay += 50*8;
 		}
 	}
-	public function slideAlong(crowd:Crowd, duration:Float, ease:Float->Float)
+	public function slideAlong(crowd:Crowd, duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
-		crowd.slideAlong(duration, ease);
+		crowd.slideAlong(duration, ease, numOfLevels);
 	}
 	
 	
@@ -167,7 +166,7 @@ class PlayState extends FlxState
 			startWave(crowds[levelNumber],true);
 		
 		if(FlxG.keys.justPressed.W)
-			advanceLevel();
+			advanceLevel(1, FlxEase.quadOut, 2);
 		
 		if(FlxG.keys.justPressed.A)
 			startFinalWave();

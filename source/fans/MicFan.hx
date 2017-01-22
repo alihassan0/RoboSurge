@@ -52,10 +52,10 @@ class MicFan extends Fan
         mic.animation.play("idle");
         fan.animation.play("idle");
     }
-    override public function slide(duration:Float, ease:Float->Float)
+    override public function slide(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
     {
-        super.slide(duration, ease);
-        FlxTween.tween(mic, { x: x-642*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
+        super.slide(duration, ease, numOfLevels);
+        FlxTween.tween(mic, { x: x-642*numOfLevels*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
     }
     public function shoutInMic()
     {

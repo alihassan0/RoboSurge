@@ -43,10 +43,10 @@ class DrumFan extends Fan
         sign.visible = false;
         drum.visible = true;
     }
-    override public function slide(duration:Float, ease:Float->Float)
+    override public function slide(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
     {
-        super.slide(duration, ease);
-        FlxTween.tween(drum, { x: x-642*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
+        super.slide(duration, ease, numOfLevels);
+        FlxTween.tween(drum, { x: x-642*numOfLevels*(1+.1*rowIndex)}, duration, {ease: ease, type: FlxTween.ONESHOT}); 
     }
     override public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {
