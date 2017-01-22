@@ -52,9 +52,9 @@ class Fan extends FlxSprite
     }
     public function slide()
     {
-        FlxTween.tween(this, { x: x-FlxG.width}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
-        FlxTween.tween(fan, { x: x-FlxG.width}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
-        FlxTween.tween(sign, { x: x-FlxG.width}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(this, { x: x-642*(1+.1*rowIndex)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(fan, { x: x-642*(1+.1*rowIndex)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(sign, { x: x-642*(1+.1*rowIndex)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
     }
     public function init(x:Float, y:Float, rowIndex:Int, colIndex:Int, type:Int, upsideColor:Int)
     {

@@ -22,7 +22,9 @@ class PlayState extends FlxState
 	var offsetX:Float = 384;
 	var offsetY:Float = 40;
 
+	var fansSectors:Array<Array<Array<Fan>>>;
 	var fans:Array<Array<Fan>>;
+	var sectorsCount = 5;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
 	var movesCounter:Int = 1;
@@ -55,24 +57,31 @@ class PlayState extends FlxState
 		levelsGoalData.loadGraphic("assets/levels/levelsGoalData.png", true, 8, 8);
 		levelsGoalData.useFramePixels;
 
+		
+		fansSectors = new Array<Array<Array<Fan>>>();
 
-		fans = new Array<Array<Fan>>();
-		for (colIndex in 0...fansInCol)
+		for (sectorsIndex in 0...sectorsCount)
 		{
-			fans[colIndex] = new Array<Fan>();
-			for (rowIndex in 0...fansInRow)
+			fansSectors[sectorsIndex] = new Array<Array<Fan>>();
+			fans = fansSectors[sectorsIndex];
+			for (colIndex in 0...fansInCol)
 			{
-				if(Math.random()<.3)
-					fans[colIndex].push(new DrumFan());
-				else if(Math.random()<.7)
-					fans[colIndex].push(new NormalFan());
-				else
-					fans[colIndex].push(new MicFan());
+				fans[colIndex] = new Array<Fan>();
+				for (rowIndex in 0...fansInRow)
+				{
+					if(Math.random()<.3)
+						fans[colIndex].push(new DrumFan());
+					else if(Math.random()<.7)
+						fans[colIndex].push(new NormalFan());
+					else
+						fans[colIndex].push(new MicFan());
+				}
 			}
 		}
+		fans = fansSectors[levelNumber];
 
 		add(movesCounterText = new FlxText(0, FlxG.height - 30, 200, "Moves: 0", 24));
-		add(levelNumberText = new FlxText(0, 10, FlxG.width, "Level: 0", 24).setFormat(null, 24, 0xFFFFFFFF, "center"));
+		add(levelNumberText = new FlxText(0, 10, FlxG.width, "Level: 1", 24).setFormat(null, 24, 0xFFFFFFFF, "center"));
 
 		add(new FlxText(FlxG.width - 100, FlxG.height - 120, 100, "correct Pattern", 8).setFormat(null, 8, 0xFF000000, "left"));
 		correctPattern = new Array<FlxSprite>();
@@ -85,7 +94,7 @@ class PlayState extends FlxState
 			add(sign);
 		}
 		
-		setupCrowd();
+		setupCrowd(fans);
 		
 	}
 	public function checkGoalState():Bool
@@ -102,10 +111,9 @@ class PlayState extends FlxState
 	{
 		//@TODO : check if this is the last level
 		levelNumber ++;
-		levelNumberText.text = "Moves: "+ levelNumber+1;
-		
-		trace("you won");
-		setupCrowd();
+		levelNumberText.text = "level: "+ (levelNumber+1);
+		slideAlong();
+		// setupCrowd();
 		
 	}
 	public function onSwitchCallback(fan:Fan)
@@ -115,7 +123,7 @@ class PlayState extends FlxState
 			
 			// advanceLevel();
 	}
-	public function setupCrowd()
+	public function setupCrowd(fans:Array<Array<Fan>>)
 	{
 		var tileMap = level.levelsArray[levelNumber];
 		levelsGoalData.animation.frameIndex = levelNumber;
@@ -255,6 +263,6 @@ class PlayState extends FlxState
 			startWave(true);
 		
 		if(FlxG.keys.justPressed.W)
-			slideAlong();
+			advanceLevel();
 	}
 }
