@@ -36,6 +36,7 @@ class PlayState extends FlxState
 	var correctPattern:Array<FlxSprite>;
 
 	var backGrounds:Array<FlxBackdrop>;
+	var decorations:Array<FlxBackdrop>;
 
 	override public function create():Void
 	{
@@ -45,6 +46,7 @@ class PlayState extends FlxState
 
 
 		backGrounds = new Array<FlxBackdrop>();
+		decorations = new Array<FlxBackdrop>();
 		for (i in 0...8){
 			if(i == 0)
 				backGrounds.push(new FlxBackdrop("assets/images/backgrounds/9.png", 1, 1, true, false));
@@ -52,7 +54,13 @@ class PlayState extends FlxState
 				backGrounds.push(new FlxBackdrop("assets/images/backgrounds/8.png", 1, 1, true, false));
 			add(backGrounds[i]);
 		}
-		
+		decorations.push(new FlxBackdrop("assets/images/backgrounds/11.png", 64/114, 1, true, false));
+		decorations.push(new FlxBackdrop("assets/images/backgrounds/1.png", 64/85, 1, true, false));
+		decorations[0].reset(0 ,54 - 114); 
+		decorations[1].reset(0, 615);
+		FlxG.state.add(decorations[0]);
+		FlxG.state.add(decorations[1]);
+
 		for (rowIndex in 0...8)
 		{
 			horizontalSapcing = 64 + 64*.1*rowIndex;
@@ -80,6 +88,7 @@ class PlayState extends FlxState
 
 		add(new FlxText(FlxG.width - 100, FlxG.height - 120, 100, "correct Pattern", 8).setFormat(null, 8, 0xFF000000, "left"));
 		correctPattern = new Array<FlxSprite>();
+		add(new FlxSprite(FlxG.width - 100, FlxG.height - 100).makeGraphic(100, 100, 0x333333));
 		for (i in 0...fansInRow*fansInCol)
 		{
 			var sign:FlxSprite = new FlxSprite(FlxG.width - 100 + i%fansInRow *10,
@@ -133,6 +142,11 @@ class PlayState extends FlxState
 			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: ease, type: tweenType, onComplete: function(tween:FlxTween) {
 			}}); 		
 		}
+		for (i in 0...decorations.length)
+		{
+			FlxTween.tween(decorations[i], { x: decorations[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: ease, type: tweenType, onComplete: function(tween:FlxTween) {
+			}}); 		
+		}
 
 		for (sectorsIndex in 0...sectorsCount)
 		{
@@ -177,7 +191,7 @@ class PlayState extends FlxState
 			if(randomFan.animation.finished)
 				randomFan.playRandomAnimation();
 		}
-		if(FlxG.keys.justPressed.TAB)
+		if(FlxG.keys.justPressed.TAB && levelNumber< sectorsCount -1)
 			startWave(crowds[levelNumber],true);
 		
 		if(FlxG.keys.justPressed.W)
