@@ -14,9 +14,7 @@ class InfoState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		add(new FlxSprite(0,0,"assets/images/mainMinue.png"));
-
-		
+		add(new FlxSprite(0,0,"assets/images/howToPlay.png"));
 		
 	}
 	override public function update(elapsed:Float):Void
