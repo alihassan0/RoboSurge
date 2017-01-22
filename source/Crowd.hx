@@ -33,12 +33,7 @@ class Crowd
 				fans[colIndex] = new Array<Fan>();
 				for (rowIndex in 0...fansInRow)
 				{
-					if(Math.random()<.3)
-						fans[colIndex].push(new DrumFan());
-					else if(Math.random()<.7)
-						fans[colIndex].push(new NormalFan());
-					else
-						fans[colIndex].push(new MicFan());
+					fans[colIndex].push(new NormalFan());
 				}
 			}
     }
@@ -75,17 +70,18 @@ class Crowd
 									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex), newColor);
 				fans[colIndex][rowIndex].onSwitchCallback = onSwitchCallback;
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
-				correctPattern[rowIndex*tileMap.widthInTiles + colIndex].color = newColor;
+				
 
 			}
 		}
 	}
+    
     public function onSwitchCallback(fan:Fan)
 	{
 		if(checkGoalState() && onDoneCallback != null)
-            onDoneCallback(this);
-
-			// advanceLevel();
+		{
+			onDoneCallback(this);
+		}
 	}
     public function startRipple(fan:Fan)
 	{

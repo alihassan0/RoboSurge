@@ -24,7 +24,7 @@ class PlayState extends FlxState
 
 	var crowds:Array<Crowd>;
 	var crowd:Crowd;
-	var sectorsCount = 3;
+	var sectorsCount = 6;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
 	var movesCounter:Int = 1;
@@ -73,7 +73,6 @@ class PlayState extends FlxState
 		{
 			crowds[sectorsIndex] = new Crowd(sectorsIndex);
 			crowds[sectorsIndex].onDoneCallback = onDoneCallback;
-			
 		}
 		
 		add(movesCounterText = new FlxText(0, FlxG.height - 30, 200, "Moves: 0", 24));
@@ -93,36 +92,32 @@ class PlayState extends FlxState
 		for (sectorsIndex in 0...sectorsCount)
 			crowds[sectorsIndex].setupCrowd(level, levelsGoalData, correctPattern);
 		
-
-		
+		resetPattern(levelNumber);		
 	}
-	
+
+	public function resetPattern(index:Int)
+	{
+		levelsGoalData.animation.frameIndex = index;
+		levelsGoalData.updateFramePixels();
+
+		for (colIndex in 0...8)
+			for (rowIndex in 0...8)
+				correctPattern[rowIndex*8 + colIndex].color = levelsGoalData.framePixels.getPixel32(colIndex,rowIndex);
+	}
 
     public function onDoneCallback(crowd:Crowd)
 	{
-		startWave(crowds[levelNumber], false);
+		startWave(crowds[levelNumber], true);
+		haxe.Timer.delay(advanceLevel.bind(.8, FlxEase.quadOut, 1), 3000);
 	}
-	
-
     
-    
-	public function startWave(crowd:Crowd,once:Bool)
-	{
-		var delay:Int = 0; 
-		for (i in 0...crowd.fans.length)
-		{
-			for (j in 0...crowd.fans[i].length)
-			{
-        		haxe.Timer.delay(crowd.fans[i][j].showCard.bind(once), delay);
-			}
-			delay += 50;
-		}
-	}
 	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
+		duration *= numOfLevels;
 		//@TODO : check if this is the last level
 		levelNumber ++;
 		levelNumberText.text = "level: "+ (levelNumber+1);
+		resetPattern(levelNumber);
 
 		for (i in 0...backGrounds.length)
 		{
@@ -135,14 +130,25 @@ class PlayState extends FlxState
 			slideAlong(crowds[sectorsIndex], duration, ease, numOfLevels);
 		}	
 	}
-
+	public function startWave(crowd:Crowd,once:Bool)
+	{
+		var delay:Int = 0; 
+		for (i in 0...crowd.fans.length)
+		{
+			for (j in 0...crowd.fans[i].length)
+			{
+        		haxe.Timer.delay(crowd.fans[i][j].showCard.bind(once), delay);
+			}
+			delay += 100;
+		}
+	}
 	public function startFinalWave()
 	{
 		var delay:Int = 0; 
 		for (sectorsIndex in 0...sectorsCount)
 		{
-        	haxe.Timer.delay(startWave.bind(crowds[sectorsIndex], false), delay);
-			delay += 50*8;
+        	haxe.Timer.delay(startWave.bind(crowds[sectorsIndex], true), delay);
+			delay += 100*10;
 		}
 	}
 	public function slideAlong(crowd:Crowd, duration:Float, ease:Float->Float, numOfLevels:Int = 1)
@@ -170,7 +176,7 @@ class PlayState extends FlxState
 		
 		if(FlxG.keys.justPressed.A)
 		{
-			advanceLevel(2.5, linear, 2);
+			haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-1), 1000);
 			startFinalWave();
 		}
 
