@@ -103,6 +103,23 @@ class Crowd
 		{
 			x = positions[i][0]+fan.colIndex;
 			y = positions[i][1]+fan.rowIndex;
+			if(inBound(x, y))
+			{
+				currentFan = getFanAt(x,y);
+				if(currentFan.type == "fan")
+        			haxe.Timer.delay(currentFan.switchCard, delay);
+			}
+		}
+	}
+    public function startDiamond(fan:Fan)
+	{
+		var delay:Int = 0; 
+		var positions = [[-1,-1],[-1,1],[1,-1],[1,1],[0,0],[0,2],[0,-2],[2,0],[-2,0]];
+		var x, y, currentFan;
+		for (i in 0...positions.length)
+		{
+			x = positions[i][0]+fan.colIndex;
+			y = positions[i][1]+fan.rowIndex;
 			trace(x, y, inBound(x, y), getFanAt(x,y).type);
 			if(inBound(x, y))
 			{
@@ -126,6 +143,8 @@ class Crowd
 	{
 		if(fan.type == "dramFan")			
 			startRipple(fan);
+		else if(fan.type == "micFan")
+			startDiamond(fan);
 
 		fan.action();
 		

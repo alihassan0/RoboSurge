@@ -62,7 +62,7 @@ class Fan extends FlxSprite
         fan.reset(x, y);
         sign.reset(x, y);
         
-        this.isUpside = type == 2;
+        this.isUpside = type != 1;
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;
         this.upsideColor = upsideColor;
@@ -75,8 +75,6 @@ class Fan extends FlxSprite
         sign.updateHitbox();
 
         setupSignColors();
-        FlxG.bitmapLog.add(upsideImage);
-        FlxG.bitmapLog.add(downsideImage);
 		
         updateSignColor();
     }
@@ -128,10 +126,10 @@ class Fan extends FlxSprite
     {
         var newScale:Float = -1*sign.scale.x;
 
-        FlxTween.tween(sign.scale, { x: 0}, 1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+        FlxTween.tween(sign.scale, { x: 0}, .5, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
             isUpside = !isUpside;
             updateSignColor();
-            FlxTween.tween(sign.scale, { x: newScale}, 1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+            FlxTween.tween(sign.scale, { x: newScale}, .5, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
                 if(onSwitchCallback != null)
                     onSwitchCallback(this);
             }});
@@ -166,7 +164,7 @@ class Fan extends FlxSprite
         var newScale:Float = (1/1.5)*sign.scale.x;
         FlxTween.tween(sign.scale, { x: newScale, y:1 },
 			1, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
-				onHideCallback();
+				// onHideCallback();
         } });
     }
     public function addOnDownFunc(onDown:FlxSprite->Void)
