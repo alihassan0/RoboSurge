@@ -156,6 +156,7 @@ class PlayState extends FlxState
 	public function startWave(crowd:Crowd,once:Bool)
 	{
 		var delay:Int = 0; 
+		
 		for (i in 0...crowd.fans.length)
 		{
 			for (j in 0...crowd.fans[i].length)
@@ -185,7 +186,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		if(Math.random()<.04)
+		if(Math.random()<.04 && levelNumber < sectorsCount-1)
 		{
 			var randomFan:Fan = crowds[levelNumber].fans[Math.floor(Math.random()*8)][Math.floor(Math.random()*8)];
 			if(randomFan.animation.finished)
