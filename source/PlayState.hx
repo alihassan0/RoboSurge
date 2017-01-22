@@ -108,20 +108,29 @@ class PlayState extends FlxState
     public function onDoneCallback(crowd:Crowd)
 	{
 		startWave(crowds[levelNumber], true);
-		haxe.Timer.delay(advanceLevel.bind(.8, FlxEase.quadOut, 1), 3000);
+		trace(levelNumber, sectorsCount);
+		if(levelNumber < sectorsCount-1)
+			haxe.Timer.delay(advanceLevel.bind(.8, FlxEase.quadOut, 1), 3000);
+		else
+		{
+			haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-1), 1000);
+			startFinalWave();
+			haxe.Timer.delay(advanceLevel.bind(.1, linear, 0-levelNumber), 0);
+		}
 	}
     
 	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
 		duration *= numOfLevels;
 		//@TODO : check if this is the last level
-		levelNumber ++;
+		levelNumber += numOfLevels;
 		levelNumberText.text = "level: "+ (levelNumber+1);
 		resetPattern(levelNumber);
-
+		var tweenType = (numOfLevels < 0)? FlxTween.BACKWARD: FlxTween.ONESHOT; 
+			
 		for (i in 0...backGrounds.length)
 		{
-			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: ease, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
+			FlxTween.tween(backGrounds[i], { x: backGrounds[i].x-642*numOfLevels*(1+.1*i)}, duration, {ease: ease, type: tweenType, onComplete: function(tween:FlxTween) {
 			}}); 		
 		}
 
@@ -176,11 +185,16 @@ class PlayState extends FlxState
 		
 		if(FlxG.keys.justPressed.A)
 		{
-			haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-1), 1000);
+			haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-levelNumber-1), 1000);
 			startFinalWave();
 		}
 
-		// if(FlxG.keys.justPressed.W)
+		
+		if(FlxG.keys.justPressed.D)
+		{
+			haxe.Timer.delay(advanceLevel.bind(.8, linear, 0-levelNumber), 0);
+			// startFinalWave();
+		}
 	}
 
 	public function linear(t:Float):Float
