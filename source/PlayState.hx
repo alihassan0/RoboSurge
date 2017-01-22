@@ -116,9 +116,11 @@ class PlayState extends FlxState
 
     public function onDoneCallback(crowd:Crowd)
 	{
+		
 		startWave(crowds[levelNumber], true);
 		trace(levelNumber, sectorsCount);
 		if(levelNumber < sectorsCount-1)
+			// advanceLevel(1, FlxEase.quadOut, 1);
 			haxe.Timer.delay(advanceLevel.bind(.8, FlxEase.quadOut, 1), 3000);
 		else
 		{
@@ -130,6 +132,7 @@ class PlayState extends FlxState
     
 	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
+		trace("WHY!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		duration *= numOfLevels;
 		//@TODO : check if this is the last level
 		levelNumber += numOfLevels;

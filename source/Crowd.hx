@@ -21,6 +21,8 @@ class Crowd
 	var offsetY:Float = 40;
 	var index:Int;
 	
+	var activeCrowd:Bool = true;
+	
     public var onDoneCallback:Crowd->Void;
     var movesCounter:Int = 1;
 
@@ -89,7 +91,7 @@ class Crowd
     
     public function onSwitchCallback(fan:Fan)
 	{
-		if(checkGoalState() && onDoneCallback != null)
+		if(activeCrowd && checkGoalState() && onDoneCallback != null)
 		{
 			onDoneCallback(this);
 		}
@@ -136,7 +138,8 @@ class Crowd
 				if(!fans[i][j].isUpside){
 					return false;
 				}
-				
+		trace(index, "is at Goal");
+		activeCrowd = false;
 		return true;
 	}
     public function onDown(sprite:FlxSprite, fan:Fan)
