@@ -24,8 +24,10 @@ class Crowd
     public var onDoneCallback:Crowd->Void;
     var movesCounter:Int = 1;
 
-    public function new (index:Int)
+    public function new (index:Int, level:TiledLevel)
     {
+		var tileMap = level.levelsArray[index];
+
         fans = new Array<Array<Fan>>();
         this.index = index;
         for (colIndex in 0...fansInCol)
@@ -33,7 +35,16 @@ class Crowd
 				fans[colIndex] = new Array<Fan>();
 				for (rowIndex in 0...fansInRow)
 				{
-					fans[colIndex].push(new NormalFan());
+					switch(tileMap.getTile(colIndex, rowIndex))
+					{
+						case 3:
+							fans[colIndex].push(new DrumFan());
+						case 4:
+							fans[colIndex].push(new MicFan());
+						default:
+							fans[colIndex].push(new NormalFan());
+						
+					}
 				}
 			}
     }

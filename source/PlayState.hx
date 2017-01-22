@@ -79,7 +79,7 @@ class PlayState extends FlxState
 
 		for (sectorsIndex in 0...sectorsCount)
 		{
-			crowds[sectorsIndex] = new Crowd(sectorsIndex);
+			crowds[sectorsIndex] = new Crowd(sectorsIndex, level);
 			crowds[sectorsIndex].onDoneCallback = onDoneCallback;
 		}
 		
