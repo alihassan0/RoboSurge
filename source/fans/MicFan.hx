@@ -55,7 +55,7 @@ class MicFan extends Fan
     override public function slide()
     {
         super.slide();
-        FlxTween.tween(mic, { x: x-FlxG.width}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
+        FlxTween.tween(mic, { x: x-642*(1+.1*rowIndex)}, 1, {ease: FlxEase.quadOut, type: FlxTween.ONESHOT}); 
     }
     public function shoutInMic()
     {

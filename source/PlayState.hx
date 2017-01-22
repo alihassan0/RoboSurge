@@ -56,7 +56,7 @@ class PlayState extends FlxState
 		for (rowIndex in 0...8)
 		{
 			horizontalSapcing = 64 + 64*.1*rowIndex;
-			var offsetX2 = 320 - (10*64)*.1*.5 *rowIndex;
+			var offsetX2 = 320 - (642)*.1*.5 *rowIndex;
 			var backGround = backGrounds[rowIndex];
 			backGround.reset(offsetX2,16+ offsetY + rowIndex*verticalSapcing);
 			backGround.scale.set(1+rowIndex*.1,1+rowIndex*.1);
@@ -101,11 +101,15 @@ class PlayState extends FlxState
 		//@TODO : check if this is the last level
 		levelNumber ++;
 		levelNumberText.text = "level: "+ (levelNumber+1);
-		slideAlong(crowds[levelNumber]);
+		for (sectorsIndex in 0...sectorsCount)
+		{
+			slideAlong(crowds[sectorsIndex]);
+		}
 		// setupCrowd();
 		
 	}
 	
+
     public function onDoneCallback(crowd:Crowd)
 	{
 		startWave(crowds[levelNumber], false);
@@ -124,6 +128,15 @@ class PlayState extends FlxState
         		haxe.Timer.delay(crowd.fans[i][j].showCard.bind(once), delay);
 			}
 			delay += 50;
+		}
+	}
+	public function startFinalWave()
+	{
+		var delay:Int = 0; 
+		for (sectorsIndex in 0...sectorsCount)
+		{
+        	haxe.Timer.delay(startWave.bind(crowds[sectorsIndex], false), delay);
+			delay += 50*8;
 		}
 	}
 	public function slideAlong(crowd:Crowd)
@@ -154,6 +167,9 @@ class PlayState extends FlxState
 			startWave(crowds[levelNumber],true);
 		
 		if(FlxG.keys.justPressed.W)
+		{
 			advanceLevel();
+			startFinalWave();
+		}
 	}
 }

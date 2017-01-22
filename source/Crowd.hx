@@ -67,7 +67,7 @@ class Crowd
 			for (rowIndex in 0...tileMap.widthInTiles)
 			{
 				horizontalSapcing = 64 + 64*.1*rowIndex;
-				offsetX = 384 - (8*64)*.1*.5 *rowIndex;
+				offsetX = ((642)*(1+.1*rowIndex)* index)+ 384 - (8*64)*.1*.5 *rowIndex;
 				var offsetX2 = 320 - (10*64)*.1*.5 *rowIndex;
 				newColor = levelsGoalData.framePixels.getPixel32(colIndex,rowIndex);
 
@@ -77,17 +77,6 @@ class Crowd
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
 				correctPattern[rowIndex*tileMap.widthInTiles + colIndex].color = newColor;
 
-				// if(colIndex == 0)
-				// {
-				// 	var backGround = backGrounds[rowIndex];
-
-				// 	backGround.reset(offsetX2,16+ offsetY + rowIndex*verticalSapcing);
-				// 	backGround.scale.set(1+rowIndex*.1,1+rowIndex*.1);
-				// 	// add(new FlxSprite(320,50,"assets/images/9.png"));
-				// }
-		
-				// verticalSapcing = 64 + rowIndex*64*.2;
-				// offsetY = 40 - rowIndex*64*.1;
 			}
 		}
 	}
