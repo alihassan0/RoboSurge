@@ -10,6 +10,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flash.display.BitmapData;
 
+import flash.filters.ColorMatrixFilter;
+import flash.geom.Matrix;
+import flash.geom.Point;
+
 class Fan extends FlxSprite
 {
     private var fan:FlxSprite;
@@ -28,16 +32,19 @@ class Fan extends FlxSprite
 
     public var onSwitchCallback:Fan->Void;
     public var type:String;
+    public var crowd:Crowd;
+    public var signReady:Bool = true;
+    public var cachedBitmap:BitmapData;
 
-
-    public function new (x:Int = 0, y:Int = 0, ?type:String = "fan")
+    public function new (crowd:Crowd, x:Int = 0, y:Int = 0, ?type:String = "fan")
     {
         super(x, y);
         loadGraphic("assets/images/stand.png");
         this.type = type;
+        this.crowd = crowd;
 
         fan = new FlxSprite(x,y);
-        fan.loadGraphic("assets/images/"+ type +"Sprite.png", true, 66, 66);
+        fan.loadGraphic("assets/images/"+ type +"Sprite.png", true, 66, 66, crowd.check(this), type+crowd.index);
         sign = new FlxSprite(x,y,"assets/images/sign.png");
         sign.loadGraphic("assets/images/sign.png", false, 0, 0, true);
 
@@ -46,6 +53,14 @@ class Fan extends FlxSprite
         FlxG.state.add(sign);
 
     }
+    public function deactivate()
+	{
+        signReady = false;
+    }
+    public function activate()
+	{
+        signReady = true;
+	}
     public function play(anim:String)
     {
         fan.animation.play(anim);
@@ -124,6 +139,10 @@ class Fan extends FlxSprite
     }
     public function switchCard()
     {
+        if(!signReady)
+            return;
+        
+        signReady = false;
         var newScale:Float = -1*sign.scale.x;
 
         FlxTween.tween(sign.scale, { x: 0}, .5, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
@@ -132,6 +151,7 @@ class Fan extends FlxSprite
             FlxTween.tween(sign.scale, { x: newScale}, .5, { startDelay: Math.random()*.1, ease: FlxEase.sineInOut, type: FlxTween.ONESHOT, onComplete: function(tween:FlxTween) {
                 if(onSwitchCallback != null)
                     onSwitchCallback(this);
+                    signReady = true;
             }});
         }}); 
     }

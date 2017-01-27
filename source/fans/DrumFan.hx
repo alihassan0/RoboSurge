@@ -10,9 +10,9 @@ class DrumFan extends Fan
 {
     private var drum:FlxSprite;
 
-    public function new (x:Int = 0, y:Int = 0, type:String = "dramFan")
+    public function new (crowd:Crowd, x:Int = 0, y:Int = 0, type:String = "dramFan")
     {
-        super(x, y, type);
+        super(crowd, x, y, type);
         sign.visible = false;
         
         drum = new FlxSprite(x,y);

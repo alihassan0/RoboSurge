@@ -19,10 +19,11 @@ class Crowd
 	var verticalSapcing:Float = 64;
 	var offsetX:Float = 384;
 	var offsetY:Float = 40;
-	var index:Int;
 	
 	var activeCrowd:Bool = true;
+	var availableTypes:Array<Fan>;
 	
+	public var index:Int;
     public var onDoneCallback:Crowd->Void;
     var movesCounter:Int = 1;
 
@@ -32,6 +33,7 @@ class Crowd
 
         fans = new Array<Array<Fan>>();
         this.index = index;
+		availableTypes = new Array<Fan>();
         for (colIndex in 0...fansInCol)
 			{
 				fans[colIndex] = new Array<Fan>();
@@ -40,11 +42,11 @@ class Crowd
 					switch(tileMap.getTile(colIndex, rowIndex))
 					{
 						case 3:
-							fans[colIndex].push(new DrumFan());
+							fans[colIndex].push(new DrumFan(this, colIndex, rowIndex));
 						case 4:
-							fans[colIndex].push(new MicFan());
+							fans[colIndex].push(new MicFan(this, colIndex, rowIndex));
 						default:
-							fans[colIndex].push(new NormalFan());
+							fans[colIndex].push(new NormalFan(this, colIndex, rowIndex));
 						
 					}
 				}
@@ -96,6 +98,15 @@ class Crowd
 			onDoneCallback(this);
 		}
 	}
+    public function check(fan:Fan)
+	{
+		for (i in 0...availableTypes.length){
+			if(availableTypes[i].type == fan.type)
+				return false;
+		}
+		availableTypes.push(fan);
+		return true;
+	}
     public function startRipple(fan:Fan)
 	{
 		var delay:Int = 0; 
@@ -141,6 +152,19 @@ class Crowd
 		trace(index, "is at Goal");
 		activeCrowd = false;
 		return true;
+	}
+
+    public function activate()
+	{
+		for (i in 0...fans.length)
+			for (j in 0...fans[i].length)
+				fans[i][j].activate();
+	}
+    public function deactivate()
+	{
+		for (i in 0...fans.length)
+			for (j in 0...fans[i].length)
+				fans[i][j].deactivate();
 	}
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{

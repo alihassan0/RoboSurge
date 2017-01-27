@@ -10,9 +10,9 @@ class MicFan extends Fan
 {
     private var mic:FlxSprite;
 
-    public function new (x:Int = 0, y:Int = 0, type:String = "micFan")
+    public function new (crowd:Crowd, x:Int = 0, y:Int = 0, type:String = "micFan")
     {
-        super(x, y, type);
+        super(crowd, x, y, type);
         fan.animation.add("idle", [0,1,0,1,0], 1, false);
 
         mic = new FlxSprite(x,y);

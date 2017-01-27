@@ -98,10 +98,15 @@ class PlayState extends FlxState
 			add(sign);
 		}
 		
-		for (sectorsIndex in 0...sectorsCount)
+		for (sectorsIndex in 0...sectorsCount){
 			crowds[sectorsIndex].setupCrowd(level, levelsGoalData, correctPattern);
+			crowds[sectorsIndex].deactivate();
+
+		}
 		
+
 		resetPattern(levelNumber);		
+		crowds[levelNumber].activate();
 	}
 
 	public function resetPattern(index:Int)
@@ -157,6 +162,8 @@ class PlayState extends FlxState
 		{
 			slideAlong(crowds[sectorsIndex], duration, ease, numOfLevels);
 		}	
+		crowds[levelNumber-1].deactivate();
+		crowds[levelNumber].activate();
 	}
 	public function startWave(crowd:Crowd,once:Bool)
 	{
