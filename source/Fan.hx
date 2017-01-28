@@ -107,9 +107,9 @@ class Fan extends FlxSprite
     {
         
     }
-    public function action()
+    public function action():Bool
     {
-        crowd.decreaseMoves();
+        return crowd.decreaseMoves();
     }
     public function setupSignColors()
     {

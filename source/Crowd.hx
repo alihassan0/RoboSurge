@@ -27,7 +27,7 @@ class Crowd
 	
 	public var index:Int;
     public var onDoneCallback:Crowd->Void;
-    public var decreaseMoves:Void->Void;
+    public var decreaseMoves:Void->Bool;
     var movesCounter:Int = 1;
 
 	public var downsideImage:BitmapData;
@@ -89,8 +89,6 @@ class Crowd
 									rowIndex, colIndex, tileMap.getTile(colIndex, rowIndex), newColor);
 				fans[colIndex][rowIndex].onSwitchCallback = onSwitchCallback;
 				fans[colIndex][rowIndex].addOnDownFunc(onDown.bind(_,fans[colIndex][rowIndex]));
-				
-
 			}
 		}
 	}
@@ -183,11 +181,6 @@ class Crowd
 	}
     public function onDown(sprite:FlxSprite, fan:Fan)
 	{
-		if(fan.type == "dramFan")			
-			startRipple(fan);
-		else if(fan.type == "micFan")
-			startDiamond(fan);
-
 		fan.action();
 		
 		if(movesCounter > 0)

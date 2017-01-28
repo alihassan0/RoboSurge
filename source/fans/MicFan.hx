@@ -62,9 +62,13 @@ class MicFan extends Fan
         mic.animation.play("useMic");
         fan.animation.play("useMic");
     }
-    override public function action()
+    override public function action():Bool
     {
-        super.action();
-		shoutInMic();
+        if(super.action())
+        {
+            crowd.startDiamond(this);
+		    shoutInMic();
+        }
+        return true;
     }
 }

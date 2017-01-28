@@ -18,9 +18,11 @@ class NormalFan extends Fan
         else
             play("sleep");
     }
-    override public function action()
+    override public function action():Bool
     {
-        super.action();
-		switchCard();
+        if(super.action())
+		    switchCard();
+
+        return true;
     }
 }

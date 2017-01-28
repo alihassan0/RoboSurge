@@ -66,9 +66,14 @@ class DrumFan extends Fan
         drum.animation.play("playDrums");
         fan.animation.play("playDrums");
     }
-    override public function action()
+    override public function action():Bool
     {
-        super.action();
-		playDrum();
+        if(super.action())
+        {
+            crowd.startRipple(this);
+		    playDrum();
+        }
+
+        return true;
     }
 }

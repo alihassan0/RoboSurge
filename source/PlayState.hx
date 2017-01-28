@@ -28,7 +28,7 @@ class PlayState extends FlxState
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
 	var movesCounter:Int = 1;
-	var movesArray = Array<Int>;
+	var movesArray:Array<Int>;
 	var movesCounterText:FlxText;
 	var levelNumberText:FlxText;
 	
@@ -118,18 +118,26 @@ class PlayState extends FlxState
 		
 
 		resetPattern(levelNumber);		
+		movesArray = [1, 2, 5, 4, 3, 4];
 		crowds[levelNumber].activate();
 	}
 
-	public function decreaseMoves()
+	public function decreaseMoves():Bool
 	{
 		movesCounter--;
-		movesCounterText.text = "Actions Left: "+ (movesCounter);
-		if(movesCounter < 0)
+		if(crowds[levelNumber].checkGoalState())
+		{
+			onDoneCallback(crowds[levelNumber]);
+		}
+		else if(movesCounter < 0)
 		{
 			movesCounter = movesArray[levelNumber];
 			crowds[levelNumber].reset(level);
+			FlxG.camera.shake(.01);
+			return false;
 		}
+		movesCounterText.text = "Actions Left: "+ (movesCounter);
+		return true;
 	}
 	public function resetPattern(index:Int)
 	{
@@ -168,7 +176,6 @@ class PlayState extends FlxState
     
 	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
-		movesArray = [1, 2, 5, 4, 3, 4];
 		duration *= numOfLevels;
 		//@TODO : check if this is the last level
 		levelNumber += numOfLevels;
@@ -194,7 +201,8 @@ class PlayState extends FlxState
 		{
 			slideAlong(crowds[sectorsIndex], duration, ease, numOfLevels);
 		}	
-		crowds[levelNumber-1].deactivate();
+		if(levelNumber> 1)
+			crowds[levelNumber-1].deactivate();
 		crowds[levelNumber].activate();
 	}
 	public function startWave(crowd:Crowd,once:Bool)
@@ -218,14 +226,12 @@ class PlayState extends FlxState
         	haxe.Timer.delay(startWave.bind(crowds[sectorsIndex], true), delay);
 			delay += 100*10;
 		}
+        haxe.Timer.delay(goToGameOverState, delay);
 	}
 	public function slideAlong(crowd:Crowd, duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
 		crowd.slideAlong(duration, ease, numOfLevels);
 	}
-	
-	
-
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
@@ -256,6 +262,13 @@ class PlayState extends FlxState
 		}
 	}
 
+	public function goToGameOverState()
+	{
+		FlxG.camera.fade(0xFF000000, .33, false, function()
+		{
+			FlxG.switchState(new InfoState());
+		});
+	}
 	public function linear(t:Float):Float
 	{
 		return t ;
