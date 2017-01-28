@@ -7,6 +7,8 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import fans.*;
 
+import flash.display.BitmapData;
+
 import flixel.addons.display.FlxBackdrop;
 
 class Crowd 
@@ -25,8 +27,10 @@ class Crowd
 	
 	public var index:Int;
     public var onDoneCallback:Crowd->Void;
+    public var decreaseMoves:Void->Void;
     var movesCounter:Int = 1;
 
+	public var downsideImage:BitmapData;
     public function new (index:Int, level:TiledLevel)
     {
 		var tileMap = level.levelsArray[index];
@@ -93,10 +97,12 @@ class Crowd
     
     public function onSwitchCallback(fan:Fan)
 	{
+		
 		if(activeCrowd && checkGoalState() && onDoneCallback != null)
 		{
 			onDoneCallback(this);
 		}
+		
 	}
     public function check(fan:Fan)
 	{

@@ -109,7 +109,7 @@ class Fan extends FlxSprite
     }
     public function action()
     {
-		
+        crowd.decreaseMoves();
     }
     public function setupSignColors()
     {
@@ -120,9 +120,12 @@ class Fan extends FlxSprite
 
         if(downsideImage != null)
             downsideImage.dispose();
-
+            
         upsideImage = sign.pixels.clone();
-        downsideImage = sign.pixels.clone();
+        if(crowd.downsideImage == null)
+            crowd.downsideImage = sign.pixels.clone();
+
+        downsideImage = crowd.downsideImage;
         
         for (i in 0 ... upsideImage.width) 
 		{

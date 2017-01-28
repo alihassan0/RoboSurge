@@ -20,6 +20,7 @@ class NormalFan extends Fan
     }
     override public function action()
     {
+        super.action();
 		switchCard();
     }
 }

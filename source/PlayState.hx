@@ -27,7 +27,7 @@ class PlayState extends FlxState
 	var sectorsCount = 6;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
-	var movesCounter:Int = 1;
+	var movesCounter:Int = 0;
 
 	var movesCounterText:FlxText;
 	var levelNumberText:FlxText;
@@ -81,6 +81,7 @@ class PlayState extends FlxState
 		{
 			crowds[sectorsIndex] = new Crowd(sectorsIndex, level);
 			crowds[sectorsIndex].onDoneCallback = onDoneCallback;
+			crowds[sectorsIndex].decreaseMoves = decreaseMoves;
 		}
 		
 		add(movesCounterText = new FlxText(0, FlxG.height - 30, 300, "Actions Left: 1", 24));
@@ -109,6 +110,11 @@ class PlayState extends FlxState
 		crowds[levelNumber].activate();
 	}
 
+	public function decreaseMoves()
+	{
+		movesCounter--;
+		movesCounterText.text = "Actions Left: "+ (movesCounter);
+	}
 	public function resetPattern(index:Int)
 	{
 		levelsGoalData.animation.frameIndex = index;
@@ -140,7 +146,7 @@ class PlayState extends FlxState
 		duration *= numOfLevels;
 		//@TODO : check if this is the last level
 		levelNumber += numOfLevels;
-		movesCounter += movesArray[levelNumber];
+		movesCounter = movesArray[levelNumber];
 
 		levelNumberText.text = "level: "+ (levelNumber+1);
 		movesCounterText.text = "Actions Left: "+ (movesCounter);

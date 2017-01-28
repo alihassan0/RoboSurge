@@ -64,6 +64,7 @@ class MicFan extends Fan
     }
     override public function action()
     {
+        super.action();
 		shoutInMic();
     }
 }

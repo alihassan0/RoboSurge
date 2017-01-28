@@ -68,6 +68,7 @@ class DrumFan extends Fan
     }
     override public function action()
     {
+        super.action();
 		playDrum();
     }
 }
