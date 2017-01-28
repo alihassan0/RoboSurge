@@ -94,6 +94,15 @@ class Crowd
 			}
 		}
 	}
+    public function reset(level:TiledLevel)
+	{
+		for (i in 0...fans.length)
+			for (j in 0...fans[i].length)
+				if(fans[i][j].isUpside != (level.levelsArray[index].getTile(i, j) != 1))
+					fans[i][j].switchCard();
+				
+			
+	}
     
     public function onSwitchCallback(fan:Fan)
 	{

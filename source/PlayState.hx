@@ -27,8 +27,8 @@ class PlayState extends FlxState
 	var sectorsCount = 6;
 	var level:TiledLevel;
 	var levelNumber:Int = 0;
-	var movesCounter:Int = 0;
-
+	var movesCounter:Int = 1;
+	var movesArray = Array<Int>;
 	var movesCounterText:FlxText;
 	var levelNumberText:FlxText;
 	
@@ -37,6 +37,8 @@ class PlayState extends FlxState
 
 	var backGrounds:Array<FlxBackdrop>;
 	var decorations:Array<FlxBackdrop>;
+
+	var font:String = "assets/digit.ttf";
 
 	override public function create():Void
 	{
@@ -56,9 +58,12 @@ class PlayState extends FlxState
 		}
 		decorations.push(new FlxBackdrop("assets/images/backgrounds/11.png", 64/114, 1, true, false));
 		decorations.push(new FlxBackdrop("assets/images/backgrounds/1.png", 64/85, 1, true, false));
+		decorations.push(new FlxBackdrop("assets/images/backgrounds/grass.jpg", 64/520, 1, true, false));
 		decorations[0].reset(0 ,54 - 114); 
 		decorations[1].reset(0, 615);
+		decorations[2].reset(0, 615);
 		FlxG.state.add(decorations[0]);
+		FlxG.state.add(decorations[2]);
 		FlxG.state.add(decorations[1]);
 
 		for (rowIndex in 0...8)
@@ -84,16 +89,22 @@ class PlayState extends FlxState
 			crowds[sectorsIndex].decreaseMoves = decreaseMoves;
 		}
 		
-		add(movesCounterText = new FlxText(0, FlxG.height - 30, 300, "Actions Left: 1", 24));
-		add(levelNumberText = new FlxText(0, 10, FlxG.width, "Level: 1", 24).setFormat(null, 24, 0xFFFFFFFF, "center"));
+		add(movesCounterText = new FlxText(0, FlxG.height - 50, 400, "Actions Left: 1"));
+		movesCounterText.setFormat(font, 48, 0xFFFF0000, "left", FlxTextBorderStyle.SHADOW, 0xFF000000);
+		movesCounterText.borderSize = 2;
+		add(new FlxSprite(FlxG.width/2 -100 , 0).makeGraphic(200,40, 0xFF000000));
+		add(levelNumberText = new FlxText(0, 0, FlxG.width, "Level: 1", 48).setFormat(font, 48, 0xFFFF0000, "center"));
 
-		add(new FlxText(FlxG.width - 100, FlxG.height - 120, 100, "correct Pattern", 8).setFormat(null, 8, 0xFF000000, "left"));
+		var correctPatternText:FlxText;
+		add(correctPatternText = new FlxText(FlxG.width - 110, FlxG.height - 105, 100, "Target", 8));
+		correctPatternText.setFormat(font, 24, 0xFFFFFFFF, "left", FlxTextBorderStyle.SHADOW, 0xFF000000);
+		correctPatternText.borderSize = 4;
 		correctPattern = new Array<FlxSprite>();
-		add(new FlxSprite(FlxG.width - 100, FlxG.height - 100).makeGraphic(100, 100, 0x333333));
+		add(new FlxSprite(FlxG.width - 100, FlxG.height - 80).makeGraphic(80, 80, 0xFF000000));
 		for (i in 0...fansInRow*fansInCol)
 		{
 			var sign:FlxSprite = new FlxSprite(FlxG.width - 100 + i%fansInRow *10,
-												FlxG.height - 100 + Math.floor(i/fansInRow )* 10);
+												FlxG.height - 80 + Math.floor(i/fansInRow )* 10);
 			sign.makeGraphic(8,8);
 			correctPattern.push(sign);
 			add(sign);
@@ -114,6 +125,11 @@ class PlayState extends FlxState
 	{
 		movesCounter--;
 		movesCounterText.text = "Actions Left: "+ (movesCounter);
+		if(movesCounter < 0)
+		{
+			movesCounter = movesArray[levelNumber];
+			crowds[levelNumber].reset(level);
+		}
 	}
 	public function resetPattern(index:Int)
 	{
@@ -122,7 +138,17 @@ class PlayState extends FlxState
 
 		for (colIndex in 0...8)
 			for (rowIndex in 0...8)
-				correctPattern[rowIndex*8 + colIndex].color = levelsGoalData.framePixels.getPixel32(colIndex,rowIndex);
+			{
+				var color = levelsGoalData.framePixels.getPixel32(colIndex,rowIndex);
+				trace(color == 0xFFFFFFFF);
+
+				correctPattern[rowIndex*8 + colIndex].color = 0xFFFF0000;
+				if(color == 0xFFFFFFFF)
+					correctPattern[rowIndex*8 + colIndex].alpha = .15;
+				else 
+					correctPattern[rowIndex*8 + colIndex].alpha = 1;
+
+			}
 	}
 
     public function onDoneCallback(crowd:Crowd)
@@ -142,7 +168,7 @@ class PlayState extends FlxState
     
 	public function advanceLevel(duration:Float, ease:Float->Float, numOfLevels:Int = 1)
 	{
-		var movesArray = [1, 2, 5, 4, 3, 4];
+		movesArray = [1, 2, 5, 4, 3, 4];
 		duration *= numOfLevels;
 		//@TODO : check if this is the last level
 		levelNumber += numOfLevels;
