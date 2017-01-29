@@ -9,21 +9,23 @@ import flixel.math.FlxMath;
 
 import flixel.util.FlxColor;
 
-class MenuState extends FlxState
+class GameOverState extends FlxState
 {
 	override public function create():Void
 	{
 		super.create();
-		add(new FlxSprite(0,0,"assets/images/mainMinue.png"));
+		bgColor = 0xFFFFFFFF;
+		add(new FlxSprite(FlxG.width/2-340,-20,"assets/images/end.png"));
+		add(new FlxText(0,FlxG.height-300, 300, "Press SPACE to replay").setFormat(null,48,0xFFFF0000 ,"center"));
 	}
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		if(FlxG.keys.justPressed.W)
+		if(FlxG.keys.justPressed.SPACE)
 		{
 			FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 			{
-				FlxG.switchState(new InfoState());
+				FlxG.switchState(new MenuState());
 			});
 		}
 	}

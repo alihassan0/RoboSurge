@@ -21,7 +21,7 @@ class InfoState extends FlxState
 	{
 		super.update(elapsed);
 		
-		if(FlxG.keys.justPressed.W)
+		if(FlxG.keys.justPressed.SPACE)
 		{
 			FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 			{

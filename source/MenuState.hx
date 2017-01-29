@@ -18,13 +18,17 @@ class MenuState extends FlxState
 	}
 	override public function update(elapsed:Float):Void
 	{
-		super.update(elapsed);
+		var x = FlxG.keys.firstJustPressed();
+		if(x != -1)
+			trace(x);
 		if(FlxG.keys.justPressed.W)
 		{
+			trace("why not working!!");
 			FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 			{
 				FlxG.switchState(new InfoState());
 			});
 		}
+		super.update(elapsed);
 	}
 }

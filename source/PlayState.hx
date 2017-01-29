@@ -264,9 +264,9 @@ class PlayState extends FlxState
 
 	public function goToGameOverState()
 	{
-		FlxG.camera.fade(0xFF000000, .33, false, function()
+		FlxG.camera.fade(0xFFFFFFFF, 3, false, function()
 		{
-			FlxG.switchState(new InfoState());
+			FlxG.switchState(new GameOverState());
 		});
 	}
 	public function linear(t:Float):Float
