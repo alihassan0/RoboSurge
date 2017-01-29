@@ -40,6 +40,7 @@ class PlayState extends FlxState
 
 	var font:String = "assets/digit.ttf";
 
+	private var tutorial:FlxSprite;
 	override public function create():Void
 	{
 		super.create();
@@ -120,6 +121,10 @@ class PlayState extends FlxState
 		resetPattern(levelNumber);		
 		movesArray = [1, 2, 5, 4, 3, 4];
 		crowds[levelNumber].activate();
+
+		add(tutorial = new FlxSprite(0,0,"assets/images/howToPlay.png"));
+		
+		
 	}
 
 	public function decreaseMoves():Bool
@@ -242,18 +247,23 @@ class PlayState extends FlxState
 			if(randomFan.animation.finished)
 				randomFan.playRandomAnimation();
 		}
-		if(FlxG.keys.justPressed.TAB && levelNumber< sectorsCount -1)
-			startWave(crowds[levelNumber],true);
-		
-		if(FlxG.keys.justPressed.W)
-			advanceLevel(1, FlxEase.quadOut, 1);
-		
-		if(FlxG.keys.justPressed.A)
-		{
-			haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-levelNumber-1), 1000);
-			startFinalWave();
-		}
+		if(FlxG.keys.pressed.TAB)
+			tutorial.visible = true;
+		else
+			tutorial.visible = false;
 
+		// if(FlxG.keys.justPressed.TAB && levelNumber< sectorsCount -1)
+		// 	startWave(crowds[levelNumber],true);
+		
+		// if(FlxG.keys.justPressed.W)
+		// 	advanceLevel(1, FlxEase.quadOut, 1);
+		
+		// if(FlxG.keys.justPressed.A)
+		// {
+		// 	haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-levelNumber-1), 1000);
+		// 	startFinalWave();
+		// }
+		
 		
 		if(FlxG.keys.justPressed.D)
 		{
