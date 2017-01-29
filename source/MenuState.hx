@@ -18,7 +18,7 @@ class MenuState extends FlxState
 	}
 	override public function update(elapsed:Float):Void
 	{
-		if(FlxG.keys.justPressed.ANY)
+		if(FlxG.keys.justPressed.SPACE)
 		{
 			trace("why not working!!");
 			FlxG.camera.fade(FlxColor.BLACK, .33, false, function()

@@ -77,7 +77,7 @@ class Fan extends FlxSprite
         fan.reset(x, y);
         sign.reset(x, y);
         
-        this.isUpside = type != 1;
+        this.isUpside = type !=1;
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;
         this.upsideColor = upsideColor;

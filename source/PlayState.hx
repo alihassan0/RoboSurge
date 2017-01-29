@@ -153,10 +153,9 @@ class PlayState extends FlxState
 			for (rowIndex in 0...8)
 			{
 				var color = levelsGoalData.framePixels.getPixel32(colIndex,rowIndex);
-				trace(color == 0xFFFFFFFF);
 
 				correctPattern[rowIndex*8 + colIndex].color = 0xFFFF0000;
-				if(color == 0xFFFFFFFF)
+				if(color == 0xFF4d4e75)
 					correctPattern[rowIndex*8 + colIndex].alpha = .15;
 				else 
 					correctPattern[rowIndex*8 + colIndex].alpha = 1;
@@ -173,9 +172,10 @@ class PlayState extends FlxState
 			haxe.Timer.delay(advanceLevel.bind(.8, FlxEase.quadOut, 1), 3000);
 		else
 		{
-			haxe.Timer.delay(advanceLevel.bind(.8, linear, sectorsCount-1), 1000);
+			haxe.Timer.delay(advanceLevel.bind(1.1, linear, sectorsCount-1), 1000);
 			startFinalWave();
 			haxe.Timer.delay(advanceLevel.bind(.1, linear, 0-levelNumber), 0);
+
 		}
 	}
     
@@ -264,10 +264,16 @@ class PlayState extends FlxState
 		// 	startFinalWave();
 		// }
 		
+
+		if(FlxG.keys.justPressed.A)
+		{
+			haxe.Timer.delay(advanceLevel.bind(1.1, linear, sectorsCount-levelNumber-1), 1000);
+			startFinalWave();
+		}
 		
 		if(FlxG.keys.justPressed.D)
 		{
-			haxe.Timer.delay(advanceLevel.bind(.8, linear, 0-levelNumber), 0);
+			haxe.Timer.delay(advanceLevel.bind(.6, linear, 0-levelNumber), 0);
 			// startFinalWave();
 		}
 	}
